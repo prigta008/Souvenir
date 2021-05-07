@@ -1,0 +1,48 @@
+/* for All*/
+:root {                 /* v-- this - sign and indentation matters  !*/
+  --page-height: calc(100vh - 73px);
+  /* total-100% ; header-40px ; footer-33px ; rest - 100% - 73px */
+}
+
+#root , .grid-container {
+  height: 100%;
+}
+
+* {
+  margin: 0 0;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}  
+.hder{
+  height: 40px;
+}
+div.min {
+  height: var(--page-height);
+  overflow-y: scroll;
+  position: relative; 
+}
+.fter{
+  height:33px;
+}
+#entry .card .card-content span {
+  font-size: small;
+}
+
+#home,
+#user,
+#cog,
+#add,
+#bell {
+  overflow-y: scroll;
+  overflow-x: hidden; 
+}
+#entry ,#signin , #signup{
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  width: 100vw;
+}
+#footer{
+  background-color: blue;
+}
