@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
-import '../App.css';
 function Footer() {
     const user = useSelector(state => state.user), { userInfo } = user;
     return (

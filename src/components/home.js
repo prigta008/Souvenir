@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { postlist } from '../actions/postActions';
 import { Error, Loading } from './Error';
-import '../App.css';
 import axios from "axios";
 import { URL } from '../constants';
 import {searchaction} from "../actions/userAction";

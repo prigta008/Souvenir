@@ -1,16 +1,15 @@
 import React from 'react'
-import '../App.css';
 
-export const Error=(props)=> {
+export const Error = (props) => {
     return (
-         <span style={{"color":props.type}}>{props.children}</span>
+        <span style={{ "color": props.type }}>{props.children}</span>
     )
 }
- 
-export const Loading=()=>{
+
+export const Loading = () => {
     return (
         <>
-        Loading....
+            Loading....
         </>
     )
 }

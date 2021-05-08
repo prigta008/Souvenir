@@ -1,6 +1,6 @@
 import Axios from "axios";
 import Swal from "sweetalert2";
-import { ADD_POST_FAIL, ADD_POST_REQUEST, ADD_POST_SUCCESS, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS, URL } from "../constants";
+import { ADD_POST_FAIL, ADD_POST_REQUEST, ADD_POST_SUCCESS, POST_DETAILS_FAIL, POST_DETAILS_REQUEST, POST_DETAILS_SUCCESS, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS, URL } from "../constants";
 
 export const postlist = (user_id) => async (dispatch) => {
     dispatch({ type: POST_LIST_REQUEST, payload: user_id });
@@ -50,5 +50,19 @@ export const addpost = (title, type, content, font, author, user_id, user_img) =
                     : error.message
         });
         Swal.fire({ icon: "error", html: "Something went Wrong !" });
+    }
+}
+export const postdet = (_id) => async (dispatch) => {
+    dispatch({ type: POST_DETAILS_REQUEST, payload: _id });
+    try {
+        const { data } = await Axios.get(URL + `/api/posts/get/post/${_id}`);
+        dispatch({ type: POST_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: POST_DETAILS_FAIL, payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        });
     }
 }

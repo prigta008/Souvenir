@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
-import '../App.css';
 import man from "./man.png";
 function Entry(props) {
     const userInfo = localStorage.getItem("UserInfo");
@@ -9,7 +8,7 @@ function Entry(props) {
     const reasonhandler = () => {
         Swal.fire({
             icon: "info",
-            title:"Pros",
+            title: "Pros",
             html:
                 `   I'll Able to Post Posts Publically( and Privately) <br/>
                    Likes, Comments On Posts<br/>
@@ -20,8 +19,8 @@ function Entry(props) {
     }
     return (
         <div id="entry" className="box">
-           <img src={man} style={{ "padding": "0", "borderStyle": "solid", "borderRadius": "50%", "width": "50vw", "height": "50vw", "marginLeft": "20vw" }} className="image is-square" alt="man_img" />
-          <br/>
+            <img src={man} style={{ "padding": "0", "borderStyle": "solid", "borderRadius": "50%", "width": "50vw", "height": "50vw", "marginLeft": "20vw" }} className="image is-square" alt="man_img" />
+            <br />
             <div className="card" style={{ "textAlign": "center" }}>
                 <h1 className="card-title">
                     Hi There !

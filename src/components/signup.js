@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from '../actions/userAction';
-import { Error } from "./Error";
-import '../App.css';
+import { Error } from "./Error"; 
 import imageCompression from 'browser-image-compression';
 
 function Signup(props) {
@@ -21,7 +20,7 @@ function Signup(props) {
         let option = {
             maxsizeMB: 0.004296875,
             maxWidthOrHeight: 300,
-            maxIteration: 15
+            maxIteration: 40
         }
         let compressed = await imageCompression(image, option);
         let reader = new FileReader();

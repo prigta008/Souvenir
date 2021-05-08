@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { signout } from '../actions/userAction';
-import '../App.css';
 
 function Setting(props) {
     const user = useSelector(state => state.user);

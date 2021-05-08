@@ -1,7 +1,6 @@
 import React  from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import logo from "./android-launchericon-48-48.png";
-import '../App.css';
+import logo from "./android-launchericon-48-48.png"; 
 import { themechanger } from '../actions/userAction';
 function Header() {
     const theme = useSelector(state => state.theme);

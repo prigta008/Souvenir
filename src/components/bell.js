@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import '../App.css';
+import { useSelector } from 'react-redux'; 
 function Bell(props) {
     const user = useSelector(state=>state.user);
     const {userInfo} = user;

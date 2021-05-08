@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
-import {  postaddreducers, postlistreducers , searchreducers, themereducers, userinforeducer, usersigninreducers, usersignupreducers } from "./reducers";
+import {  postaddreducers, postdetreducers, postlistreducers , searchreducers, themereducers, userdetreducers, userinforeducer, usersigninreducers, usersignupreducers } from "./reducers";
 
 
 const initialState = {
@@ -31,7 +31,9 @@ const reducer = combineReducers({
     post: postaddreducers,
     theme: themereducers,
     userinfo: userinforeducer,
-    search:searchreducers
+    search:searchreducers,
+    det:postdetreducers,
+    userdet:userdetreducers
 })
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(reducer, initialState, composeEnhancer(applyMiddleware(thunk)));

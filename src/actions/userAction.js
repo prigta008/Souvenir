@@ -16,7 +16,10 @@ import {
     URL,
     SEARCH_REQUEST,
     SEARCH_SUCCESS,
-    SEARCH_FAIL
+    SEARCH_FAIL,
+    USER_DETAILS_REQUEST,
+    USER_DETAILS_SUCCESS,
+    USER_DETAILS_FAIL
 } from "../constants";
 import Swal from "sweetalert2";
 export const signin = (email, password) => async (dispatch) => {
@@ -132,6 +135,21 @@ export const searchaction = (type, search) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: SEARCH_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        })
+    }
+}
+export const userdetaction = (_id) => async (dispatch) => {
+    dispatch({ type: USER_DETAILS_REQUEST, payload: _id });
+    try {
+        const { data } = await Axios.get(URL + `/api/user/get/userdet/${_id}`);
+        dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: USER_DETAILS_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

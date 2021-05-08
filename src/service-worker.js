@@ -80,9 +80,9 @@ const assests = [
 self.addEventListener("install", e => {
   console.log('Service Worker : Installed')
   e.waitUntil(
-    caches.open(cachename).then(cache => {
-      console.log("Service worker : Caching files")
-      cache.addAll(assests)
+    caches.open(cachename).then(async (cache) => {
+     console.log("Service worker : Caching files")
+     await cache.addAll(assests)
     }).then(self.skipWaiting())
   )
 });
