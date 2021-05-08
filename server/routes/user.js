@@ -5,6 +5,7 @@ import bcrptjs from "bcryptjs";
 import { generatetoken } from "../util.js";
 const route = express.Router();
 
+//signin route
 route.post("/post/user/signin", Async(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -19,6 +20,7 @@ route.post("/post/user/signin", Async(async (req, res) => {
         res.status(404).send({ message: "User not found" });
     }
 }));
+
 //getting user by name
 route.get("/get/username/:name", Async(async (req, res) => {
     const users = await User.find({ username: req.params.name });
@@ -29,6 +31,18 @@ route.get("/get/username/:name", Async(async (req, res) => {
         res.status(404).send({ message: "User not Found" });
     }
 }));
+
+//user by id
+route.get("/get/userdet/:id",Async(async (req,res) =>{
+    const user = await User.findById(req.params.id);
+    if(user){
+        res.status(200).send(user);
+    }
+    else{
+        res.status(404).send({message:"User Not Found !"});
+    }
+}));
+
 //signup
 route.post("/post/user/signup", Async(async (req, res) => {
     const user = new User({
@@ -55,13 +69,13 @@ route.post("/post/user/signup", Async(async (req, res) => {
         res.status(404).send({ message: error.message });
     }
 }));
+
 //edit userprofile
 route.put("/put/user", Async(async (req, res) => {
     const user = await User.findById(req.body._id);
     user.description = req.body.desc;
     user.username = req.body.username;
     user.age = req.body.age;
-    user.password = bcrptjs.hashSync(req.body.password, 10);
     user.img = req.body.img;
     try {
         const updated = await user.save();
@@ -71,16 +85,4 @@ route.put("/put/user", Async(async (req, res) => {
         res.status(400).send({ message: error.message });
     }
 }));
-//edit image 
-route.put("/put/user/image", Async(async (req, res) => {
-    const user = await User.findById(req.body._id);
-    user.img = req.body.img;
-    try {
-        const updated = await user.save();
-        res.status(200).send(updated);
-    }
-    catch (error) {
-        res.status(400).send({ message: error.message })
-    }
-}))
 export default route;

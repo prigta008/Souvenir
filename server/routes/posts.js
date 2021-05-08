@@ -23,9 +23,23 @@ route.get("/get/allpostby/:name", Async(async (req, res) => {
 // for posts details
 route.get("/get/post/:id", Async(async (req, res) => {
     const post = await Post.findById(req.params.id);
-    const comment = await Comment.find({ post_id: post._id });
     if (post) {
-        res.send(post);
+        const comment = await Comment.find({ post_id: post._id });
+        if (comment) {
+            res.status(200).send({
+                author: post.author,
+                user_id: post.user_id,
+                user_img: post.user_img,
+                font: post.font,
+                content: post.content,
+                likes: post.likes,
+                likers: post.likers,
+                title: post.title,
+                comments: comment
+            })
+        } else {
+            res.status(200).send(post);
+        }
     }
     else {
         res.status(404).send({ message: "No Post Found" });
@@ -42,11 +56,11 @@ route.post("/post/post", Async(async (req, res) => {
     });
     try {
         const newpost = await post.save();
-        res.status(200).send(newpost)
+        res.status(200).send(newpost);
     } catch (error) {
         res.status(400).send({
             message: error.message
-        })
+        });
     }
 }))
 route.put("/put/post", Async(async (req, res) => {
@@ -56,7 +70,7 @@ route.put("/put/post", Async(async (req, res) => {
         post.content = req.body.content;
         try {
             const updated = await post.save();
-            res.send(updated);
+            res.status(200).send(updated);
         } catch (error) {
             res.status(400).send({ message: error.message });
         }
