@@ -10,7 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
 const PASSWORD = process.env.PASSWORD;
 const DBNAME = process.env.DBNAME;
 const PORT = process.env.PORT;
@@ -23,15 +22,17 @@ mongoose.connect(CONNECTION_URL, {
 })
     .then(() => { console.log("connected") })
     .catch((error) => { console.log(error) });
+
 mongoose.set("returnOriginal", false);
+
 app.use("/api/posts", postroute);
 app.use("/api/comments", commentroute);
-app.use("/api/user",userroute);
+app.use("/api/user", userroute);
 
 app.use((err, req, res, next) => {
     res.status(500).send({ message: err.message })
 });
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.send("Running")
 })
 app.listen(PORT, () => {
