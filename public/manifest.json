@@ -1,0 +1,58 @@
+{
+  "manifest_version": 2,
+  "name": "Souvenir : Blogging WebApp",
+  "short_name": "Souvenir",
+  "version": "2.0.0",
+  "version_name": "2.0 beta",
+  "description": "By Priyanshu Gupta",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait",
+  "display": "standalone",
+  "theme_color": "#70245C",
+  "background_color": "#21366C",
+  "icons": [
+    {
+      "src": "./192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Home Page",
+      "url": "/home",
+      "description": "Recent Posts...",
+      "icons": [
+        {
+          "src": "./pen.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Create New",
+      "url": "/add",
+      "description": "Create New Posts...",
+      "icons": [
+        {
+          "src": "./home.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
