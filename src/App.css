@@ -39,7 +39,8 @@ div.min {
 #user,
 #cog,
 #add,
-#bell {
+#bell,
+#signin {
   overflow-y: scroll;
   overflow-x: hidden;
 }

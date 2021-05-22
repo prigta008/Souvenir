@@ -35,6 +35,9 @@ export const POST_EDIT_FAIL = "POST_EDIT_FAIL";
 export const LIST_POST_REQUEST = "LIST_POST_REQUEST";
 export const LIST_POST_SUCCESS = "LIST_POST_SUCCESS";
 export const LIST_POST_FAIL = "LIST_POST_FAIL"; 
+export const FOLLOW_REQUEST = "FOLLOW_REQUEST";
+export const FOLLOW_SUCCESS ="FOLLOW_SUCCESS";
+export const FOLLOW_FAIL="FOLLOW_FAIL";
 export const URL = "http://localhost:5003";
 export const ch = (t)=>{
     const arr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','y','z',

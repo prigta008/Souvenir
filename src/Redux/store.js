@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
-import { numreducers, postaddreducers, postdetreducers, postlistreducers, searchreducers, themereducers, userdetreducers, userinforeducer, usersigninreducers, usersignupreducers } from "./reducers";
+import { numreducers, postaddreducers, postdetreducers, postfolingreducers, postlistreducers, searchreducers, themereducers, userdetreducers, userinforeducer, usersigninreducers, usersignupreducers } from "./reducers";
 
 var date = new Date();
 const initialState = {
@@ -8,11 +8,6 @@ const initialState = {
         userInfo: localStorage.getItem("UserInfo")
             ? JSON.parse(localStorage.getItem("UserInfo"))
             : null
-    },
-    post: {
-        posts: localStorage.getItem("Posts")
-            ? JSON.parse(localStorage.getItem("Posts"))
-            : []
     },
     theme: {
         color: localStorage.getItem("Color")
@@ -34,7 +29,8 @@ const reducer = combineReducers({
     search: searchreducers,
     det: postdetreducers,
     userdet: userdetreducers,
-    num: numreducers
+    num: numreducers,
+    folingposts:postfolingreducers
 })
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(reducer, initialState, composeEnhancer(applyMiddleware(thunk)));

@@ -2,6 +2,9 @@ import {
     ADD_POST_FAIL,
     ADD_POST_REQUEST,
     ADD_POST_SUCCESS,
+    LIST_POST_FAIL,
+    LIST_POST_REQUEST,
+    LIST_POST_SUCCESS,
     POST_DETAILS_FAIL,
     POST_DETAILS_REQUEST,
     POST_DETAILS_SUCCESS,
@@ -102,7 +105,18 @@ export const postaddreducers = (state = {}, action) => {
             return state;
     }
 }
-
+export const postfolingreducers = (state={},action)=>{
+    switch (action.type) {
+        case LIST_POST_REQUEST:
+          return {loading:true}
+        case LIST_POST_SUCCESS:
+            return {loading:false,response:action.payload}
+        case LIST_POST_FAIL:
+            return {loading:false,error:action.payload}
+        default:
+           return state;
+    }
+}
 export const postdetreducers = (state = {}, action) => {
     switch (action.type) {
         case POST_DETAILS_REQUEST:

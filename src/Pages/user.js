@@ -18,7 +18,6 @@ function User(props) {
     var { loading, error, list } = postslist;
     const nur = useSelector(state => state.num), { num } = nur;
     useEffect(() => { dispatch(postlist(userInfo._id)); }, [dispatch, userInfo, num]);
-
     return (
         <div id="user" className={`${color}`}>
             {userInfo ? <Profile img={userInfo.img} username={userInfo.username}
@@ -36,7 +35,7 @@ function User(props) {
                 {loading ? <Loading> </Loading> : error ? <Error type="red">{error}</Error>
                     : (<div>{list?list.length === 0 ? (<div> No Posts ! <NavLink to="/add"> Create A New One </NavLink></div>)
                         : list.map((data) => (
-                            <Post data={data} allow={true}
+                            <Post data={data} allow={true} type="post"
                                 key={data._id} id={ch(list.indexOf(data))} />
                         )):""}
                     </div>)
@@ -45,10 +44,10 @@ function User(props) {
                 : ""}
             { nav === "followers" ? userInfo.followers.length !== 0 ?
                 <Followers data={userInfo.followers} />
-                : "Sorry to Inform ! You've no Followers" : ""}
-            {nav === "following" ? userInfo.following !== 0 ?
+                : <Error type="red">Sorry to Inform ! You've no Followers</Error> : ""}
+            {nav === "following" ? userInfo.following.length !== 0 ?
                 <Followers data={userInfo.following} />
-                : "You aren't following Anyone" : ""}
+                : <Error type="red">You aren't following anyone</Error> : ""}
         </div>
     )
 }

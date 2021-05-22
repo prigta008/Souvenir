@@ -76,8 +76,8 @@ export const Dp = (props) => {
 }
 export const Content = (props) => {
     useEffect(() => {
-     if (document.querySelector(`#${props.id}`)) document.querySelector(`#${props.id}`).innerHTML = props.content 
-    }, [props.content,props.id]);
+        if (document.querySelector(`#${props.id}`)) document.querySelector(`#${props.id}`).innerHTML = props.content
+    }, [props.content, props.id]);
     return (
         <div className="media-content">
             <p>
@@ -111,10 +111,12 @@ export const Post = (props) => {
         <div>
             <div className="box">
                 <article className="media">
-                    <Dp data={data.user_id} />
-                    <Content author={data.author} createdAt={data.createdAt}
-                        font={data.font} content={data.content} title={data.title} id={props.id} />
-                    <Sidebar id={data._id} uid={data.user_id} uname={data.author} />
+                    <Dp data={data.user_id ? data.user_id : data._id} />
+                    <Content author={data.author ? data.author : data.username} createdAt={data.createdAt}
+                        font={data.font ? data.font : ""} content={data.content ? data.content : ""}
+                        title={data.title ? data.title : data.description} id={props.id} />
+                    {props.type === "post" ? <Sidebar id={data._id} uid={data.user_id} uname={data.author} />
+                        : ""}
                 </article>
 
                 {allow ? <div className="field is-grouped is-grouped-centered">

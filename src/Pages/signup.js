@@ -5,6 +5,7 @@ import { signup } from '../Redux/userAction';
 import { Error } from "../components/Error";
 import imageCompression from 'browser-image-compression';
 import { FileLabel, FormLabel, LastButton, SmallLabelForLeft, SmallLabelForRight } from '../components/formele';
+import Swal from 'sweetalert2';
 
 function Signup(props) {
     const [email, setEmail] = useState("");
@@ -32,7 +33,8 @@ function Signup(props) {
         let reader = new FileReader();
         reader.readAsDataURL(compressed);
         reader.addEventListener("load", () => {
-            setimg(reader.result)
+            setimg(reader.result);
+            console.log(compressed.size/1024)
         });
     }
     const submithandler = (e) => {
@@ -61,7 +63,8 @@ function Signup(props) {
         setdis(false);
     }
     useEffect(() => {
-        if (userInfo) { setTimeout(function () {if(userInfo.img) props.history.push("/user") }, 4000); }
+        if (userInfo) { setTimeout(function () {if(userInfo.img){
+            Swal.fire({icon:"info",html:"Account Created Successfully ! <br/> Proceed to Signin"}); props.history.push("/signin")} }, 4000); }
     }, [userInfo, props.history]);
     return (
         <section id="signin">

@@ -19,18 +19,23 @@ import {
     SEARCH_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
-    USER_DETAILS_FAIL
+    USER_DETAILS_FAIL,
+    FOLLOW_REQUEST,
+    FOLLOW_FAIL,
+    FOLLOW_SUCCESS
 } from "./constants";
 import Swal from "sweetalert2";
 export const signin = (email, password, id) => async (dispatch) => {//use - signin and update user profile
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
     if (email === "" && password === "") {
-        await Axios.get(URL + `/api/user/get/userdet/${id}`)
-            .then((res) => {
-                localStorage.setItem("UserInfo", JSON.stringify(res.data));
-                dispatch({ type: USER_SIGNIN_SUCCESS, payload: res.data });
-            })
-            .catch((err) => { return; });
+      console.log("Exec()")
+        try {
+            const { data } = await Axios.get(URL + `/api/user/get/userdet/${id}`);
+            dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+            localStorage.setItem("UserInfo", JSON.stringify(data));
+        } catch (error) {
+            Swal.fire({ icon: "error", html: "Something Went Wrong <br/> Try Again later !😥" })
+        }
     }
     else {
         try {
@@ -156,6 +161,23 @@ export const userdetaction = (_id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        })
+    }
+}
+export const followaction=(subject,object)=>async (dispatch)=>{
+    dispatch({type:FOLLOW_REQUEST,payload:{subject,object}});
+    try {
+        const {data} = await Axios.put(URL+"/api/user/put/follow", { subject, object }),{s,o} = data;
+        dispatch({type:FOLLOW_SUCCESS,payload:o});
+        dispatch({type:USER_SIGNIN_SUCCESS,payload:s});
+        localStorage.setItem("UserInfo",JSON.stringify(s));
+    } catch (error) {
+        dispatch({
+            type: FOLLOW_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

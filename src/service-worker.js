@@ -6,7 +6,15 @@
 // code you'd like.
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
-
+/*
+    "workbox-background-sync": "^5.1.4",
+    "workbox-broadcast-update": "^5.1.4",
+    "workbox-build": "^6.1.5",
+    "workbox-google-analytics": "^5.1.4",
+    "workbox-navigation-preload": "^5.1.4",
+    "workbox-range-requests": "^5.1.4",
+    "workbox-streams": "^5.1.4"
+*/
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
@@ -99,3 +107,6 @@ registerRoute(({ url }) =>
       new CacheableResponsePlugin({ statuses: [0, 200] })
     ]
   }));
+registerRoute(({url}) => 
+  url.origin==="http://localhost:5003" && url.pathname.startsWith("/api/user/get/img/") ,
+  new StaleWhileRevalidate({cacheName:"user-img"}));

@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import './App.css';
 import Entry from './Pages/entry';
 import Header from "./components/Header";
@@ -16,7 +17,6 @@ import Prof from "./components/Prof";
 import UserProf from './components/userProf';
 import EditPost from './components/EditPost';
 import { NotFound } from './components/Error';
-import { useSelector } from 'react-redux';
 
 function App() {
   const theme = useSelector(state=>state.theme),{color} = theme;

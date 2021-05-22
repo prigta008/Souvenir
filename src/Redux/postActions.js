@@ -1,6 +1,6 @@
 import Axios from "axios";
 import Swal from "sweetalert2";
-import { ADD_POST_FAIL, ADD_POST_REQUEST, ADD_POST_SUCCESS, LIST_POST_REQUEST, POST_DETAILS_FAIL, POST_DETAILS_REQUEST, POST_DETAILS_SUCCESS, POST_EDIT_FAIL, POST_EDIT_REQUEST, POST_EDIT_SUCCESS, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS, URL } from "./constants";
+import { ADD_POST_FAIL, ADD_POST_REQUEST, ADD_POST_SUCCESS, LIST_POST_FAIL, LIST_POST_REQUEST, LIST_POST_SUCCESS, POST_DETAILS_FAIL, POST_DETAILS_REQUEST, POST_DETAILS_SUCCESS, POST_EDIT_FAIL, POST_EDIT_REQUEST, POST_EDIT_SUCCESS, POST_LIST_FAIL, POST_LIST_REQUEST, POST_LIST_SUCCESS, URL } from "./constants";
 //getting posts by id
 export const postlist = (user_id) => async (dispatch) => {
     dispatch({ type: POST_LIST_REQUEST, payload: user_id });
@@ -17,8 +17,20 @@ export const postlist = (user_id) => async (dispatch) => {
         });
     }
 }
-export const postfollowing=()=>async (dispatch)=>{
-    dispatch({type:LIST_POST_REQUEST,payload})
+export const postfollowing = (following) => async (dispatch) => {
+    dispatch({ type: LIST_POST_REQUEST, payload: following });
+    try {
+        const { data } = await Axios.post(URL+`/api/posts/get/allposts/following`,{following});
+        dispatch({ type: LIST_POST_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: LIST_POST_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        })
+    }
 }
 //getting post details
 export const postdet = (_id) => async (dispatch) => {
@@ -42,7 +54,7 @@ export const addpost = (title, content, font, author, user_id) => async (dispatc
     try {
         const { data } = await Axios.post(URL + "/api/posts/post/post", { title, content, font, author, user_id });
         dispatch({ type: ADD_POST_SUCCESS, payload: data });
-        Swal.fire({icon:"success",html:'New Post Added'});
+        Swal.fire({ icon: "success", html: 'New Post Added' });
     } catch (error) {
         dispatch({
             type: ADD_POST_FAIL, payload:
