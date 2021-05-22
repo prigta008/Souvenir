@@ -38,7 +38,7 @@
       "description": "Recent Posts...",
       "icons": [
         {
-          "src": "./pen.png",
+          "src": "./home3.png",
           "sizes": "96x96"
         }
       ]
@@ -49,7 +49,7 @@
       "description": "Create New Posts...",
       "icons": [
         {
-          "src": "./home.png",
+          "src": "./create-new.png",
           "sizes": "96x96"
         }
       ]
