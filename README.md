@@ -13,12 +13,12 @@
      Bulma (Styling Purposes), and much more...
 
 #### For Back-End :
-     Mongoose (DataBases, and Schemes )
+     Mongoose (DataBases, and Schemas )
      Express (Library For Server Routing )
      Node.js
      Nodemon, cors, and dotenv (continous rendering , cross-origin requests , and encapsulating data respectively)
 #### DataBase : 
-    MongoDB Atlas (Free Subsription 😁)
+    MongoDB Atlas (Free Subscription 😁)
 
 11 May 2021
     DashBoard For User, and Editing Posts (Done)
