@@ -13,7 +13,7 @@
      Bulma (Styling Purposes), and much more...
 
 #### For Back-End :
-     Mongoose (DataBases, and Schemas )
+     Mongoose (DataBases, and Schemes )
      Express (Library For Server Routing )
      Node.js
      Nodemon, cors, and dotenv (continous rendering , cross-origin requests , and encapsulating data respectively)
