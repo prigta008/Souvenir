@@ -26,3 +26,6 @@
 ##### Most Time taking Functions : 
      1. Deleting a Post 
      2. Following a User
+
+     Things to do :-
+    Delete post private
