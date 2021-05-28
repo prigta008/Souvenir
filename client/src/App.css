@@ -1,0 +1,53 @@
+:root {
+  --page-height: calc(100vh - 86px);
+}
+#root {
+  height: 100%;
+}
+.contro.h-i-l .ic.i-l {
+  height: 40px;
+}
+* {
+  margin: 0 0;
+}
+img,*{
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.hder {
+  height: 40px;
+}
+div.min {
+  height: var(--page-height);
+  overflow-y: scroll;
+  position: relative;
+}
+.fter {
+  height: 46px;
+}
+#home,#user,#cog,#add,#bell,#signin {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.rower,.parent,.foot {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.rewor {
+  border: 1px solid grey;
+  width: calc(100vw / 2 - 2px);
+}
+.active {
+  color: #3273dc;
+}
+.active :hover {
+  color: rgb(119, 119, 243);
+}
+.child {
+  border: 1px solid grey;
+  width: calc(100vw / 3 - 2px);
+}
