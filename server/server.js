@@ -5,7 +5,9 @@ import cors from "cors";
 import postroute from "./routes/posts.js";
 import commentroute from "./routes/comment.js";
 import userroute from "./routes/user.js";
+
 dotenv.config();
+
 const app = express();
 app.use(express.json({limit:"30mb",extended:true}));//default is 100kb
 app.use(express.urlencoded({limit:"30mb", extended: true }));
