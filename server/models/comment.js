@@ -13,14 +13,14 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    author_img:String,
     post_id: {
         type: String,
         required: true
+    },
+    createdAt:{
+        type:Date,
+        required:true
     }
-},
-    {
-        timestamps: true
-    });
+},{timestamps: true});
 const commentModel = new mongoose.model("comment", commentSchema);
 export default commentModel;
