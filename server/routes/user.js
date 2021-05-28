@@ -30,10 +30,36 @@ route.post("/post/user/signin", Async(async (req, res) => {
         res.status(404).send({ message: "User not found" });
     }
 }));
-
+route.post("/post/user/signup", Async(async (req, res) => {
+    const user = new User({
+        username: req.body.username,
+        age: req.body.age,
+        email: req.body.email,
+        password: bcrptjs.hashSync(req.body.password),
+        createdAt: req.body.time,
+        img: req.body.img
+    });
+    try {
+        const newuser = await user.save();
+        res.status(200).send({
+            _id: newuser._id,
+            username: newuser.username,
+            email: newuser.email,
+            age: newuser.age,
+            createdAt: newuser.createdAt,
+            img: newuser.img,
+            following: newuser.following,
+            followers: newuser.followers,
+            token: generatetoken(newuser)
+        });
+    }
+    catch (error) {
+        res.status(401).send({ message: error.message });
+    }
+}));
 //getting user by name
 route.get("/get/username/:name", Async(async (req, res) => {
-    const users = await User.find({ username: req.params.name });
+    const reg = new RegExp(req.params.name, "i"), users = await User.find({ username: { $in: reg } });
     if (users) {
         res.status(200).send(users);
     }
@@ -60,38 +86,16 @@ route.get("/get/userdet/:id", Async(async (req, res) => {
         res.status(404).send({ message: "User Not Found !" });
     }
 }));
-route.get("/get/img/:id",Async(async (req,res)=>{
+route.get("/get/img/:id", Async(async (req, res) => {
     const user = await User.findById(req.params.id);
-    if(user){res.status(200).send(user.img)}
-    else{res.status(404).send({message:"Not Found"})}
+    if (user) { res.status(200).send(user.img) }
+    else { res.status(404).send({ message: "Not Found" }) }
 }));
-//signup
-route.post("/post/user/signup", Async(async (req, res) => {
-    const user = new User({
-        username: req.body.username,
-        age: req.body.age,
-        email: req.body.email,
-        password: bcrptjs.hashSync(req.body.password),
-        createdAt: req.body.time,
-        img: req.body.img
-    });
-    try {
-        const newuser = await user.save();
-        res.status(200).send({
-            _id: newuser._id,
-            username: newuser.username,
-            email: newuser.email,
-            age: newuser.age,
-            createdAt: newuser.createdAt,
-            img: newuser.img,
-            following:newuser.following,
-            followers:newuser.followers,
-            token: generatetoken(newuser)
-        });
-    }
-    catch (error) {
-        res.status(401).send({ message: error.message });
-    }
+
+route.get("/get/following/list/:id", Async(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) { res.status(200).send(user.following) }
+    else { res.status(404).send({ message: "Not Found !" }) }
 }));
 
 //edit userprofile
@@ -133,17 +137,23 @@ route.put("/put/follow", Async(async (req, res) => {
         if (bool()) {
             object.followers = object.followers.filter((u) => { u.id !== subject._id });
             subject.following = subject.following.filter((u) => { u.id !== object._id });
-            const s =  await subject.save(), o = await object.save();
-            res.status(200).send({s,o});
+            const s = await subject.save(), o = await object.save();
+            res.status(200).send({
+                s: { _id: s._id, username: s.username, description: s.description, followers: s.followers, following: s.following, age: s.age, img: s.img, email: s.email, createdAt: s.createdAt }
+                , o: { _id: o._id, username: o.username, description: o.description, followers: o.followers, following: o.following, img: o.img, createdAt: o.createdAt }
+            });
         }
         else {
             var arr = { id: req.body.object }, arr2 = { id: req.body.subject };
             subject.following.push(arr);
             object.followers.push(arr2);
-            const s =  await subject.save(), o = await object.save();
-            res.status(200).send({s,o});
+            const s = await subject.save(), o = await object.save();
+            res.status(200).send({
+                s: { _id: s._id, username: s.username, description: s.description, followers: s.followers, following: s.following, age: s.age, img: s.img, email: s.email, createdAt: s.createdAt }
+                , o: { _id: o._id, username: o.username, description: o.description, followers: o.followers, following: o.following, img: o.img, createdAt: o.createdAt }
+            });
         }
-    }else {   res.status(404).send({ message: "Not Found!" })}
+    } else { res.status(404).send({ message: "Not Found!" }) }
 }));
 
 export default route;

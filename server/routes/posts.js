@@ -2,10 +2,9 @@ import express from "express";
 import Async from "express-async-handler";
 import Post from "../models/posts.js";
 import Comment from "../models/comment.js";
-import mongoose from "mongoose";
 const route = express.Router();
 route.get("/get/allpost/:id", Async(async (req, res) => {
-    const posts = await Post.find({ user_id: req.params.id });
+    const posts = await Post.aggregate([{ $match: { user_id: req.params.id } }, { $sort: { createdAt: -1 } }]);
     if (posts) {
         res.status(200).send(posts);
     }
@@ -20,18 +19,24 @@ route.post("/get/allposts/following", Async(async (req, res) => {
     for (let i = 0; i < req.body.following.length; i++) {
         arr.push(req.body.following[i].id);
     }
-    const posts = await Post.find({ user_id: { $in: arr } })
+    let posts = await Post.aggregate([{ $match: { user_id: { $in: arr } } }, { $sort: { createdAt: -1 } }])
     if (posts) { res.status(200).send(posts) }
     else { res.status(404).send({ message: "Not Found" }) }
 }));
 
 route.get("/get/allpostby/:name", Async(async (req, res) => {
-    const posts = await Post.find({ title: req.params.name });
+    var reg = new RegExp(req.params.name, "i");
+    const posts = await Post.find({ title: { $in: reg } });
     if (posts) {
         res.status(200).send(posts);
     } else {
         res.status(404).send({ message: "Posts not found ! We search posts by Title" })
     }
+}));
+route.get("/get/likes/:id", Async(async (req, res) => {
+    const post = await Post.findById(req.params.id);
+    if (post) { res.status(200).send({likes:post.likers.length}) }
+    else { res.status(404).send({ message: "Not Found !" }) }
 }));
 // for posts details
 route.get("/get/post/:id", Async(async (req, res) => {
@@ -78,7 +83,7 @@ route.post("/post/post", Async(async (req, res) => {
         createdAt: date.toString()
     });
     try {
-        let t = await post.save(); res.status(200).send(t);
+        let t = await post.save(); res.status(201).send(t);
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
@@ -103,15 +108,13 @@ route.put("/put/post", Async(async (req, res) => {
 }));
 //like button 
 route.put("/put/likes", Async(async (req, res) => {
-    const post = await Post.findById(req.body._id);
-    const u_id = req.body.user_id;
-    const uname = req.body.username;
-    const arr = { username: uname, userid: u_id }
-    const bool = () => {
-        for (let i = 0; i < post.likers.length; i++) {
-            if (post.likers[i].username === uname) { return true }
+    const post = await Post.findById(req.body._id), u_id = req.body.user_id,
+        uname = req.body.username, arr = { username: uname, userid: u_id },
+        bool = () => {
+            for (let i = 0; i < post.likers.length; i++) {
+                if (post.likers[i].username === uname) { return true }
+            }
         }
-    }
     if (post) {
         try {
             if (bool()) {
