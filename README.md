@@ -29,3 +29,6 @@
 
      Things to do :-
     Delete post private
+    resolved the problem of reload : dispatch signin success
+    
+    
