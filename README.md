@@ -20,15 +20,6 @@
 #### DataBase : 
     MongoDB Atlas (Free Subscription 😁)
 
-11 May 2021
-    DashBoard For User, and Editing Posts (Done)
-    Settings Section and Bell  section (Done)
 ##### Most Time taking Functions : 
      1. Deleting a Post 
      2. Following a User
-
-     Things to do :-
-    Delete post private
-    resolved the problem of reload : dispatch signin success
-    
-    
