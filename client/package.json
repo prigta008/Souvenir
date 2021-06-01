@@ -2,7 +2,7 @@
   "name": "souvenir",
   "version": "0.2.0",
   "private": true,
-  "proxy": "http://192.168.43.63:5003",
+  "proxy": "http://0.0.0.0:5003",
   "author": "Priyanshu Gupta",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
