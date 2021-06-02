@@ -1,5 +1,6 @@
 # Souvenir : Blogging App
 ## MERN + Bulma 
+check out the deployed site : https://sharp-almeida-889585.netlify.app
 ### Used Technologies/Framework/Libraries
 #### For Front-End : 
      React (For Making Pages, Layouts, etc.)
