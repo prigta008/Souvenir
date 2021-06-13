@@ -2,48 +2,32 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Moment from "react-moment";
 import axios from "axios";
-import { ch, URL } from "../Redux/constants";
+import { URL } from "../Redux/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { Content, Error, Head, Loading } from "./Error";
 import { followaction } from "../Redux/userAction";
 export const FormLabel = (props) => {
     const theme = useSelector(state => state.theme), { color } = theme;
-    return (
-        <label className={`label ${color}`} htmlFor={props.labelfor}>{props.label}</label>
-    )
+    return (<label className={`label ${color}`} htmlFor={props.labelfor}>{props.label}</label>)
 }
 export const SmallLabelForLeft = (props) => {
-    return (
-        <span className="icon is-small is-left">
-            <i className={props.icon}></i>
-        </span>
-    )
+    return (<span className="icon is-small is-left"><i aria-hidden="true" className={props.icon}></i></span>)
 }
 export const SmallLabelForRight = (props) => {
-    return (
-        <span className="icon is-small is-right">
-            <i className={props.icon}></i>
-        </span>
-    )
+    return (<span className="icon is-small is-right"> <i aria-hidden="true" className={props.icon}></i></span>)
 }
 export const FileLabel = () => {
     return (
         <span className="file-cta">
-            <span className="file-icon">
-                <i className='fas fa-upload'></i>
-            </span>
-            <span className="file-label">
-                Choose a File...
-        </span>
+            <span className="file-icon"><i className='fas fa-upload'></i></span>
+            <span className="file-label">Choose a File...</span>
         </span>
     )
 }
 export const LastButton = (props) => {
     return (
         <div className="field is-grouped is-grouped-centered">
-            <button className="button control is-success" type="submit" disabled={props.dis}>
-                Submit
-                </button>
+            <button className="button control is-success" type="submit" disabled={props.dis}> Submit</button>
             <button type="reset" className="button control is-success is-light">Clear</button>
         </div>
     )
@@ -52,15 +36,15 @@ export const Profile = (props) => {
     return (
         <div className="box">
             <div className="card-image">
-                <figure className="image is-4by4">
-                    <img width="100%" height="auto" src={props.img} alt="profile" />
+                <figure className="image">
+                    <img src={props.img} width="100%" height='auto' alt="Placeholder" />
                 </figure>
             </div>
-            <div className="card-content">
+            <div className="card-content p-1 mt-1">
                 <div className="media">
                     <div className="media-left">
-                        <figure className="image is-48x48">
-                            <img src={props.img} alt="profile" />
+                        <figure className="bd-wt-avatar mx-2 my-0">
+                            <img alt="dat" src={props.img} />
                         </figure>
                     </div>
                     <div className="media-content">
@@ -75,10 +59,10 @@ export const Profile = (props) => {
                 </div>
                 <div className="content">
                     <u> About</u>   {props.description}<hr />
-                    {props.allow ? <span> <u>Email</u>   {props.email} <hr /></span> : ""}
+                    {props.allow ? <span> <u>Email</u>   {props.email}<hr /></span> : ""}
                     <u>Joined</u>   <Moment fromNow>{props.createdAt}</Moment>
                     {
-                        props.followers ? props.followers.length !== 0 ? (<p><u>Followers</u> {props.followers.length}</p>) : "" : ""
+                        props.followers ? props.followers.length !== 0 ? (<div><hr /><u>Followers</u> {props.followers.length}</div>) : "" : ""
                     }
                 </div>
             </div>
@@ -86,12 +70,11 @@ export const Profile = (props) => {
     )
 }
 export const Followers = (props) => {
-    const [every, setevery] = useState([]), [load, setload] = useState(true), [num, setnum] = useState(0),
+    const [every, setevery] = useState([]), [load, setload] = useState(true), nu = useSelector(state => state.num), { num } = nu,
         [error, seterror] = useState(""), dispatch = useDispatch(),
         user = useSelector(state => state.user), { userInfo } = user,
         followhandler = (a, b) => {
             dispatch(followaction(a, b));
-            setnum(num + 1);
         },
         bool = (t) => {
             if (load && error) { return; }
@@ -118,18 +101,18 @@ export const Followers = (props) => {
     return (
         <div>
             {load ? <Loading />
-                : error !== "" ? <Error type="red">{error}</Error>
+                : error !== "" ? <Error>{error}</Error>
                     : every.map((data) => (
                         <div key={data._id} className="bd-item bd-wt bd-is-huge">
                             <Head hasToDo={false} src={data.img} data={data._id} uname={data.username}
                                 createdAt={data.createdAt} />
                             <NavLink to={`/userProf/${data._id}`}>
-                                <Content id={ch(every.indexOf(data))} content={data.description} title="About" font="inherit" />
-                                {props.type === "followers" ? <p className="footer is-centered">
-                                    <button onClick={() => followhandler(userInfo._id, data._id)} className="button is-link">
-                                        {bool(data.followers) ? 'UnFollow' : "Follow"}</button>
-                                </p>
-                                    : ""}            </NavLink>        </div>
+                                <Content  content={data.description} title="About" font="inherit" />
+                            </NavLink>
+                            {props.type === "followers" && <p className="footer ml-6 my-2 p-1 is-centered">
+                                <button onClick={() => followhandler(userInfo._id, data._id)} className="button is-link">
+                                    {bool(data.followers) ? 'UnFollow' : "Follow"}</button>
+                            </p>}                  </div>
                     ))}
         </div>
     )

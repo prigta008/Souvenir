@@ -49,13 +49,12 @@ export const postdet = (_id) => async (dispatch) => {
 }
 //adding post
 export const addpost = (title, type, content, font, author, user_id) => async (dispatch) => {
-    content = content.replaceAll("\n", "<br/>");
     dispatch({ type: ADD_POST_REQUEST, payload: { title, type, content, font, author, user_id } });
     if (type) {
         try {
             const { data } = await Axios.post(URL + "/api/posts/post/post", { title, content, font, author, user_id });
             dispatch({ type: ADD_POST_SUCCESS, payload: data });
-            Swal.fire({ icon: "success", html: 'New Post Added' });
+            if ((localStorage.getItem("success") ? localStorage.getItem("success").toString() : "true") === "true") { Swal.fire({ icon: "success", html: 'New Post Added' }) };
         } catch (error) {
             dispatch({
                 type: ADD_POST_FAIL, payload:
@@ -63,7 +62,7 @@ export const addpost = (title, type, content, font, author, user_id) => async (d
                         ? error.response.data.message
                         : error.message
             });
-            Swal.fire({ icon: "error", html: "Something went Wrong !" });
+            if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") { Swal.fire({ icon: "error", html: "Something went Wrong !" }) };
         }
     }
     else {
@@ -75,9 +74,9 @@ export const addpost = (title, type, content, font, author, user_id) => async (d
             }
             t.push(o);
             localStorage.setItem("Posts", JSON.stringify(t));
-            Swal.fire({ icon: "success", html: "Post Added Privately" });
+            if ((localStorage.getItem("success") ? localStorage.getItem("success").toString() : "true") === "true") { Swal.fire({ icon: "success", html: "Post Added Privately" }) };
         } catch (error) {
-            Swal.fire({ icon: "error", html: error })
+            if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") { Swal.fire({ icon: "error", html: error }) }
         }
     }
 }
@@ -86,7 +85,7 @@ export const editpostaction = (_id, title, font, content) => async (dispatch) =>
     try {
         const { data } = await Axios.put(URL + "/api/posts/put/post", { _id, title, font, content });
         dispatch({ type: POST_EDIT_SUCCESS, payload: data });
-        Swal.fire({ icon: "success", html: "Updated Sucessfully" });
+        if ((localStorage.getItem("success") ? localStorage.getItem("success").toString() : "true") === "true") { Swal.fire({ icon: "success", html: "Updated Sucessfully" }) };
     } catch (error) {
         dispatch({
             type: POST_EDIT_FAIL, payload:
@@ -96,21 +95,23 @@ export const editpostaction = (_id, title, font, content) => async (dispatch) =>
         });
     }
 }
-export const deleteprivate = (t) => {
+export const deleteprivate = (t)=>(dispatch) => {
     let u = localStorage.getItem("Posts") ? JSON.parse(localStorage.getItem("Posts")) : [];
     localStorage.setItem("Posts", JSON.stringify(u.filter((v) => v.createdAt !== t)));
+    dispatch({ type: DELETE, payload: t.toISOString() });
 }
 export const deletepost = () => (dispatch) => {
     var t = new Date(); dispatch({ type: DELETE, payload: t.toISOString() });
 }
-export const makePostOffToOn = (t) =>async (dispatch) => {
+export const makePostOffToOn = (t) => async (dispatch) => {
     dispatch({ type: REQ, payload: t });
     let { author, content, font, title, user_id } = t, u = localStorage.getItem("Posts") ? JSON.parse(localStorage.getItem("Posts")) : [];
     try {
         const { data } = await Axios.post(URL + "/api/posts/post/post", { title, content, font, author, user_id });
         dispatch({ type: SUCCESS, payload: data });
         localStorage.setItem("Posts", JSON.stringify(u.filter((v) => v.createdAt !== t.createdAt)));
-        Swal.fire({ icon: "success", html: "Done Successfully !" });
+        if ((localStorage.getItem("success") ? localStorage.getItem("success").toString() : "true") === "true") { Swal.fire({ icon: "success", html: "Done Successfully !" }) };
+        dispatch({ type: DELETE, payload: t.toISOString() });
     } catch (error) {
         dispatch({
             type: FAIL, payload:
@@ -118,6 +119,11 @@ export const makePostOffToOn = (t) =>async (dispatch) => {
                     ? error.response.data.message
                     : error.message
         });
-        Swal.fire({ icon: "error", html: error });
+        if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") {
+            Swal.fire({ icon: "error", html: error })
+        };
     }
+}
+export const offedit=(t)=>(dispatch)=>{
+    dispatch({type:POST_DETAILS_SUCCESS,payload:t})
 }

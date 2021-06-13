@@ -1,25 +1,9 @@
 import Axios from "axios";
 import {
-    USER_SIGNIN_REQUEST,
-    USER_SIGNIN_SUCCESS,
-    USER_SIGNIN_FAIL,
-    USER_SIGN_OUT,
-    UPDATE_USER_REQUEST,
-    UPDATE_USER_SUCCESS,
-    UPDATE_USER_FAIL,
-    URL,
-    SEARCH_REQUEST,
-    SEARCH_SUCCESS,
-    SEARCH_FAIL,
-    USER_DETAILS_REQUEST,
-    USER_DETAILS_SUCCESS,
-    USER_DETAILS_FAIL,
-    FOLLOW_REQUEST,
-    FOLLOW_FAIL,
-    FOLLOW_SUCCESS,
-    SELF_RELOAD_REQUEST,
-    SELF_RELOAD_SUCCESS,
-    SELF_RELOAD_FAIL
+    USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNIN_FAIL, USER_SIGN_OUT, UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS, UPDATE_USER_FAIL, URL, SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAIL,
+    USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, FOLLOW_REQUEST, FOLLOW_FAIL,
+    FOLLOW_SUCCESS, DELETE
 } from "./constants";
 import Swal from "sweetalert2";
 export const signin = (email, password) => async (dispatch) => {
@@ -37,8 +21,8 @@ export const signin = (email, password) => async (dispatch) => {
                     : error.message
         })
     }
-}
-export const signup = (email, password, username, age, time, img) => async (dispatch) => {
+},
+ signup = (email, password, username, age, time, img) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password, username, age, time, img } });
     try {
         const { data } = await Axios.post(URL + "/api/user/post/user/signup",
@@ -53,18 +37,19 @@ export const signup = (email, password, username, age, time, img) => async (disp
                     : error.message
         })
     }
-}
-export const signout = () => async (dispatch) => {
+},
+ signout = () => async (dispatch) => {
     dispatch({ type: USER_SIGN_OUT });
     localStorage.removeItem("UserInfo");
-}
-export const updateuser = (_id, username, desc, age, img) => async (dispatch) => {
+},
+ updateuser = (_id, username, desc, age, img) => async (dispatch) => {
     dispatch({ type: UPDATE_USER_REQUEST, payload: { _id, username, desc, age, img } });
     try {
         const { data } = await Axios.put(URL + "/api/user/put/user", { _id, username, desc, age, img });
         localStorage.setItem('UserInfo', JSON.stringify(data));
-        dispatch({ type: UPDATE_USER_SUCCESS, payload: data })
-        Swal.fire({ icon: "info", html: "Updated Successfully", footer: "Note: If shown Image at user page is not Updated , Reload the Page" });
+        dispatch({ type: UPDATE_USER_SUCCESS, payload: data });
+        dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+        if ((localStorage.getItem("info") ? localStorage.getItem("info").toString() : "true") === "true") { Swal.fire({ icon: "info", html: "Updated Successfully" }) };
     } catch (error) {
         dispatch({
             type: UPDATE_USER_FAIL,
@@ -73,7 +58,7 @@ export const updateuser = (_id, username, desc, age, img) => async (dispatch) =>
                     ? error.response.data.message
                     : error.message
         });
-        Swal.fire("Something Went Wrong");
+        if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") { Swal.fire({ icon: "error", html: "Something Went Wrong" }) };
     }
 }
 export const themechanger = (color) => (dispatch) => {
@@ -93,7 +78,7 @@ export const searchaction = (type, search) => async (dispatch) => {
         if (type === "post") {
             const { data } = await Axios.get(URL + `/api/posts/get/allpostby/${search}`)
             if (data.length === 0) {
-                Swal.fire({ icon: "error", html: "Not Found ! We search via Title (and Username)" })
+                if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") { Swal.fire({ icon: "error", html: "Not Found ! We search via Title (and Username)" }) }
                 dispatch({ type: SEARCH_SUCCESS, payload: data });
             }
             else {
@@ -102,7 +87,7 @@ export const searchaction = (type, search) => async (dispatch) => {
         } else {
             const { data } = await Axios.get(URL + `/api/user/get/username/${search}`);
             if (data.length === 0) {
-                Swal.fire({ icon: "error", html: "Not Found ! We search via Title (and Username)" })
+                if ((localStorage.getItem("error") ? localStorage.getItem("error").toString() : "true") === "true") { Swal.fire({ icon: "error", html: "Not Found ! We search via Title (and Username)" }) }
                 dispatch({ type: SEARCH_SUCCESS, payload: data });
             }
             else {
@@ -141,6 +126,7 @@ export const followaction = (subject, object) => async (dispatch) => {
         localStorage.setItem("UserInfo", JSON.stringify(s));
         dispatch({ type: FOLLOW_SUCCESS, payload: o });
         dispatch({ type: USER_SIGNIN_SUCCESS, payload: s });
+        var t = new Date(); dispatch({ type: DELETE, payload: t.toISOString() })
     } catch (error) {
         dispatch({
             type: FOLLOW_FAIL,
@@ -151,21 +137,14 @@ export const followaction = (subject, object) => async (dispatch) => {
         })
     }
 }
-export const selfReloadUserDetails = (id) => async (dispatch) => {
-    dispatch({ type: SELF_RELOAD_REQUEST, payload: id });
+export const dataUpToDate = (id) => async (dispatch) => {
     try {
-        const { data } = await Axios.get(URL + `/api/user/get/following/list/${id}`);
-        let t = localStorage.getItem("UserInfo") ? JSON.parse(localStorage.getItem("UserInfo")) : {},
-            u = { _id: t._id, username: t.username, description: t.description, followers: t.followers, following: data, img: t.img, email: t.email, createdAt: t.createdAt, age: t.age };
-        localStorage.setItem("UserInfo", JSON.stringify(u));
-        dispatch({ type: SELF_RELOAD_SUCCESS, payload: data });
+        await Axios.get(URL + `/api/user/get/userdetails/${id}`)
+            .then(({ data }) => {
+                localStorage.setItem("UserInfo", JSON.stringify(data));
+                dispatch({ type: USER_SIGNIN_SUCCESS, payload: data })
+            })
     } catch (error) {
-        dispatch({
-            type: SELF_RELOAD_FAIL,
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        })
+        console.log(error.toString())
     }
 }

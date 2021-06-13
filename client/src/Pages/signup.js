@@ -7,72 +7,46 @@ import imageCompression from 'browser-image-compression';
 import { FileLabel, FormLabel, LastButton, SmallLabelForLeft, SmallLabelForRight } from '../components/formele';
 
 function Signup(props) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [username, setname] = useState("");
-    const [age, setage] = useState(0);
-    const [dis, setdis] = useState(false);
-    const [img, setimg] = useState("");
-    const [problem, setproblem] = useState("");
-
-    const user = useSelector(state => state.user),{ userInfo, error } = user;
-    const theme = useSelector(state => state.theme), { color } = theme;
-    const dispatch = useDispatch();
-    const imghandler = async (e) => {
-        let image = e.target.files[0];
-        let option = {maxsizeMB: 0.004296875, maxWidthOrHeight: 300}
-        let compressed = await imageCompression(image, option);
-        let reader = new FileReader();
-        reader.readAsDataURL(compressed);
-        reader.addEventListener("load", () => {
-            setimg(reader.result);
-            console.log(compressed.size/1024)
-        });
-    }
-    const submithandler = (e) => {
-        e.preventDefault();
-        setdis(true);
-        const t = () => {
-            for (let o = 0; o < username.length; o++) {
-                if (!isNaN(Number(username.charAt(o)))) { return true }
+    const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [username, setname] = useState(""),
+        [age, setage] = useState(0), [dis, setdis] = useState(false), [img, setimg] = useState(""), [problem, setproblem] = useState(""),
+        user = useSelector(state => state.user), { userInfo, error } = user,theme = useSelector(state => state.theme), { color } = theme,
+        dispatch = useDispatch(),
+        imghandler = async (e) => {
+            let image = e.target.files[0], option = { maxsizeMB: 0.004296875, maxWidthOrHeight: 300 }
+            if (image) {let compressed = await imageCompression(image, option), reader = new FileReader();
+                reader.readAsDataURL(compressed); reader.addEventListener("load", () => { setimg(reader.result); document.querySelector(".signup").style.marginTop = "80px" });
+            } else { setimg(""); }
+        },
+        submithandler = (e) => {
+            e.preventDefault();
+            setdis(true);
+            if (password.length < 6 || password.length > 10) {
+                setproblem("Password should between 6 and 10 characters")
             }
+            else if (username.length < 4 || username.length > 13) {
+                setproblem("Username should contain between 4 and 13 characters")
+            }
+            else if (age < 15 || age > 70) {
+                setproblem("Your Age should be greater than 15 years!")
+            } else {
+                const time = new Date();
+                dispatch(signup(email, password, username, age, time, img));
+            }
+            setdis(false);
         }
-        if (password.length < 6 || password.length > 10) {
-            setproblem("Password should between 6 and 10 characters")
-        }
-        else if (username.length < 4 || username.length > 13) {
-            setproblem("Username should contain between 4 and 13 characters")
-        }
-        else if (t()) {
-            setproblem("Username should not contain number")
-        }
-        else if (age < 15 || age > 70) {
-            setproblem("Your Age should be greater than 15 years!")
-        } else {
-            const time = new Date();
-            dispatch(signup(email, password, username, age, time, img));
-        }
-        setdis(false);
-    }
-    useEffect(() => {
-        if (userInfo) { setTimeout(function () {if(userInfo.img){ props.history.push("/user")} }, 4000); }
-    }, [userInfo, props.history]);
+    useEffect(() => { if (userInfo) props.history.push("/") }, [userInfo, props.history]);
     return (
-        <section id="signin">
+        <section id="signin" className="signup mt-3">
             <form method="POST" onSubmit={submithandler}
-                onReset={() => { setEmail(""); setPassword(""); setage(0); setname(""); }}
+                onReset={() => { setEmail(""); setPassword(""); setage(0); setname(""); setimg("") }}
                 autoComplete="off" className={`card box ${color}`}>
                 <header className="card-header">
                     <NavLink activeClassName={`card-header-icon ${color}`} to="/" >
-                        <span className="icon">
-                            <i className="fas fa-chevron-left"></i>
-                        </span>
+                        <span className="icon"><i className="fas fa-chevron-left"></i></span>
                     </NavLink>
-                    <p className={`card-header-title is-centered ${color}`}>
-                        Register
-                </p>
+                    <p className={`card-header-title is-centered ${color}`}>Register</p>
                 </header>
-                <Error type="red">{problem}</Error>
+                <Error>{problem}</Error>
                 <FormLabel labelfor="name" label="Username" />
                 <div className="control has-icons-left has-icons-right">
                     <input className="input is-primary" name="name" type="text" required={true} value={username}
@@ -80,7 +54,6 @@ function Signup(props) {
                     <SmallLabelForLeft icon="fas fa-user" />
                     <SmallLabelForRight icon="fas fa-check" />
                 </div>
-
                 <FormLabel labelfor="email" label="Email-Address" />
                 <div className="control has-icons-left has-icons-right">
                     <input className="input is-primary" name="email" type="email" required={true} value={email}
@@ -88,7 +61,6 @@ function Signup(props) {
                     <SmallLabelForLeft icon="fas fa-envelope" />
                     <SmallLabelForRight icon="fas fa-check" />
                 </div>
-
                 <FormLabel labelfor="password" label="Password" />
                 <div className="control has-icons-left has-icons-right">
                     <input className="input is-primary" name="password" type="password" required={true} value={password}
@@ -96,7 +68,6 @@ function Signup(props) {
                     <SmallLabelForLeft icon="fas fa-lock" />
                     <SmallLabelForRight icon="fas fa-check" />
                 </div>
-
                 <FormLabel labelfor="age" label="Age" />
                 <div className="control has-icons-left has-icons-right">
                     <input className="input is-primary" name="age" type="tel" required={true} value={age}
@@ -104,7 +75,6 @@ function Signup(props) {
                     <SmallLabelForLeft icon="fas fa-user" />
                     <SmallLabelForRight icon="fas fa-check" />
                 </div>
-
                 <FormLabel labelfor="pic" label="Profile Image" />
                 <div className="file">
                     <label className="file-label">
@@ -112,18 +82,13 @@ function Signup(props) {
                             accept="image/*" onChange={imghandler} multiple={false} />
                         <FileLabel />
                     </label>
-                </div>
-                <br />
-                {
-                    img ? <img src={img} alt="src" className="image is-128x128" /> : ""
-                }
+                </div><br />
+                {img ? <img aria-hidden="true" src={img} alt="src" className="image is-128x128" /> : ""}
                 <br />
                 <LastButton dis={dis} />
                 <div className="card-footer is-centered">
                     <p className="card-footer-item is-centered is-small">
-                        <Error type="red">{error}</Error>                  
-                        Already Have an Account ?  <NavLink to="/signin">Log-In</NavLink>
-                    </p>
+                        <Error>{error}</Error>Already Have an Account ?  <NavLink to="/signin">Log-In</NavLink></p>
                 </div>
             </form>
         </section>

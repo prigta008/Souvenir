@@ -145,3 +145,19 @@ export const getcommentlistsreducers = (state = {}, action) => {
             return state;
     }
 }
+export const pagereducers = (state = {}, action) => {
+    switch (action.type) {
+        case "HOME":
+            return { page: "home" }
+        case "USER":
+            return { page: "user" }
+        case "ADD":
+            return { page: "add" }
+        case "BELL":
+            return { page: "bell" }
+        case "COG":
+            return { page: "cog" }
+        default:
+            return state;
+    }
+}

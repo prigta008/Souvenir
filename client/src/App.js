@@ -15,7 +15,8 @@ import Edit from './Pages/Edit';
 import Prof from "./Pages/Prof";
 import UserProf from './Pages/userProf';
 import EditPost from './Pages/EditPost';
-
+import About from './Pages/about';
+import Glossary from './Pages/Glossary';
 function App() {
   const theme = useSelector(state => state.theme), { color } = theme;
   return (
@@ -26,11 +27,13 @@ function App() {
       <div className={`min ${color}`}>
         <Route path="/signin" exact={true} component={Signin}></Route>
         <Route path="/signup" exact={true} component={Signup}></Route>
-        <Route path="/home" exact={true} component={Home} ></Route>
         <Route path="/user" exact={true} component={User}></Route>
         <Route path="/add" exact={true} component={Add}></Route>
         <Route path="/bell" exact={true} component={Bell}></Route>
         <Route path="/cog" exact={true} component={Cog}></Route>
+        <Route path="/about" exact={true} component={About}></Route>
+        <Route path="/home" exact={true} component={Home} ></Route>
+        <Route path="/glossary" exact={true} component={Glossary}></Route>
         <Route path="/edit/user" exact={true} component={Edit} ></Route>
         <Route path="/edit/post/:id" exact={true} component={EditPost}></Route>
         <Route path="/posts/:id" exact={true} component={Prof}></Route>

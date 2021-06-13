@@ -8,31 +8,25 @@ function Entry(props) {
     const theme = useSelector(state => state.theme), { color } = theme;
     useEffect(() => { if (userInfo) { props.history.push("/home") } }, [userInfo, props.history]);
     const reasonhandler = () => {
-        Swal.fire({
-            icon: "info",
-            title: "Pros",
-            html:
-                `   I'll Able to Post Posts Publically <br/>
-                   Likes, Comments On Posts<br/>
-                  Night Mode<br/>
-                  And much more...
-                  `
+        Swal.fire({icon: "info",title: "Pros",html:`I'll Able to Post Posts Publically & Privately<br/>Likes, Comments On Posts<br/>Night Mode<br/>And much more...`
         })
     }
     return (
-        <div id="entry" className={`box ${color}`}>
-            <img  src={man} style={{ "padding": "0", "borderStyle": "solid", "borderRadius": "50%", "width": "50vw", "height": "50vw", "marginLeft": "20vw" }} className="image is-square" alt="man_img" />
+       <div className="fgh">
+            <div id="entry" className={`box ${color}`}>
+            <img aria-hidden="true"  src={man} style={{ "borderStyle": "solid", "borderRadius": "50%", "width": "50vw", "height": "50vw", "marginLeft": "20vw" }}
+             className="image is-square p-0 is-unselectable" alt="man_img" />
             <br />
             <div className={`card ${color}`} style={{ "textAlign": "center" }}>
-                <h1 className="card-title">
+                <p className="card-title is-size-4">
                     Hi There !
-             </h1>
-                <h2 className="card-subtitle">
+             </p>
+                <p className="card-subtitle is-size-5">
                     Want to join<br /> Our Community ?
-                  </h2>
+                  </p>
                 <div className="card-content">
                     <NavLink to="/signin">
-                        <button className="button is-link is-rounded" >
+                        <button className="button is-purple is-rounded" >
                             Log-In
                         </button>
                     </NavLink>
@@ -45,11 +39,12 @@ function Entry(props) {
                     </NavLink>
                     <br />
                     <br/>
-                    <span onClick={reasonhandler}>
+                    <span onClick={reasonhandler} className="has-text-info">
                         Why should I Log-In/Register ?
                 </span>
                 </div>
             </div>
+        </div>
         </div>
     )
 }
