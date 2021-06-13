@@ -1,13 +1,13 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "description": "backend of souvenir",
   "main": "server.js",
   "proxy": true,
   "engines": {
     "node": "14.15.3",
-    "npm":"6.14.9"
+    "npm": "6.14.9"
   },
   "scripts": {
     "start": "nodemon --experimental-modules --unhandled-rejections=strict server.js"
@@ -24,4 +24,4 @@
     "mongoose": "^5.12.7",
     "nodemon": "^2.0.7"
   }
-}
+} 
